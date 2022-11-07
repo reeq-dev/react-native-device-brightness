@@ -1,8 +1,10 @@
 package com.reactnativedevicebrightness
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.Promise
+import android.provider.Settings;
+
 
 class DeviceBrightnessModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
@@ -10,11 +12,33 @@ class DeviceBrightnessModule(reactContext: ReactApplicationContext) : ReactConte
         return "DeviceBrightness"
     }
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
     @ReactMethod
-    fun multiply(a: Int, b: Int, promise: Promise) {
-          promise.resolve(a * b)
-        }
-
+    fun setBrightnessLevel(brightnessLevel: Float) {
+      val activity = currentActivity ?: return
+      activity.runOnUiThread {
+        val atts = activity.window.attributes
+        atts.screenBrightness = brightnessLevel
+        activity.window.attributes = atts
+      }
     }
+
+    @ReactMethod
+    fun getBrightnessLevel(promise: Promise) {
+      promise.resolve(currentActivity!!.window.attributes.screenBrightness)
+    }
+
+    @ReactMethod
+    fun getSystemBrightnessLevel(promise: Promise) {
+      val brightness: String = Settings.System.getString(currentActivity!!.contentResolver, "screen_brightness")
+      promise.resolve(brightness.toInt() / 255f)
+    }
+
+    @ReactMethod
+    fun addListener(eventName: String?) {
+    }
+
+    @ReactMethod
+    fun removeListeners(count: Int?) {
+    }
+
+}

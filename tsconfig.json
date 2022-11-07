@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "react-native-device-brightness": ["./src/index"]
+      "@reeq/react-native-device-brightness": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

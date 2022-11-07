@@ -1,6 +1,6 @@
 {
-  "name": "react-native-device-brightness",
-  "version": "0.1.0",
+  "name": "@reeq/react-native-device-brightness",
+  "version": "1.0.0",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
