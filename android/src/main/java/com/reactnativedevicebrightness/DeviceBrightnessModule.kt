@@ -13,7 +13,7 @@ class DeviceBrightnessModule(reactContext: ReactApplicationContext) : ReactConte
     }
 
     @ReactMethod
-    fun setBrightnessLevel(brightnessLevel: Float) {
+    fun setBrightnessLevel(brightnessLevel: Float, animated: Boolean) {
       val activity = currentActivity ?: return
       activity.runOnUiThread {
         val atts = activity.window.attributes
