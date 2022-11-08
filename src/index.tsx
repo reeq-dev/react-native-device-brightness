@@ -61,7 +61,7 @@ export const useUnmountBrightness = (
     try {
       const prev = Number(prevBrightness.current);
 
-      setBrightnessLevel(prev || 0.5);
+      setBrightnessLevel(prev || 0.5, animated);
     } catch (err) {
       console.log(err);
     }
