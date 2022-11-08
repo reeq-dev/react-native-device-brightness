@@ -78,10 +78,8 @@ export const useUnmountBrightness = (
   };
 
   useEffect(() => {
-    console.log('settings brightness');
     getPrevAndSetNewBrightness();
     return () => {
-      console.log('removing brightness');
       restoreBrightness();
     };
   }, []);
