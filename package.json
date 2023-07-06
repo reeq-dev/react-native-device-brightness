@@ -1,6 +1,6 @@
 {
   "name": "@reeq/react-native-device-brightness",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "React-Native library which allows you to change devices brightness level",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
