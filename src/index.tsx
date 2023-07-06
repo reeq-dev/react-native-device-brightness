@@ -18,6 +18,10 @@ const DeviceBrightness = NativeModules.DeviceBrightness
       }
     );
 
+/**
+ * Sets current device brightness level. Available range is between 0-1.
+ * Example setBrightnessLevel(0.25, true);
+ */
 export const setBrightnessLevel = (
   level: number,
   animated: boolean = false
@@ -31,10 +35,16 @@ export const setBrightnessLevel = (
   DeviceBrightness.setBrightnessLevel(level, animated);
 };
 
+/**
+ * Gets current device brightness level in range 0-1.
+ */
 export const getBrightnessLevel = (): Promise<number> => {
   return DeviceBrightness.getBrightnessLevel();
 };
 
+/**
+ * Gets android current device system brightness level in range 0-1, iOS throws error.
+ */
 export const getSystemBrightnessLevel = (): Promise<number> => {
   if (Platform.OS !== 'android') {
     throw Error('getSystemBrightnessLevel is android only');
@@ -42,6 +52,10 @@ export const getSystemBrightnessLevel = (): Promise<number> => {
   return DeviceBrightness.getSystemBrightnessLevel();
 };
 
+/**
+ * Hook sets a brightness level,
+ * will trigger each time when level is changed.
+ */
 export const useDeviceBrightness = (
   level: number,
   animated: boolean = false
@@ -51,6 +65,10 @@ export const useDeviceBrightness = (
   }, [level, animated]);
 };
 
+/**
+ * Hook sets a brightness level,
+ * will trigger only once when component is mounted, and restore to level user had before mount.
+ */
 export const useUnmountBrightness = (
   level: number,
   animated: boolean = false
