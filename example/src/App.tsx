@@ -1,119 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   getBrightnessLevel,
-  getSystemBrightnessLevel,
+  resetBrightness,
   setBrightnessLevel,
   useDeviceBrightness,
-  useUnmountBrightness,
 } from '@reeq/react-native-device-brightness';
-import {
-  Alert,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const BrightnessLockerComponent = () => {
+const UnmountBrightnessComponent = () => {
   const level = 0.94;
 
-  useUnmountBrightness(level);
+  useDeviceBrightness(level, true);
 
   return (
-    <Text>
+    <Text style={styles.text}>
       I set brightness level to {level}, but will restore your previous
       brightness when you delete me
     </Text>
   );
 };
 
-const BrightnessSetterComponent = () => {
-  const level = 0.75;
-  useDeviceBrightness(1, true);
-
-  return (
-    <Text>
-      I set brightness level to {level}, and when you delete me brightness won't
-      be changed
-    </Text>
-  );
-};
-
 export default function App() {
-  const [brightness, setBrightness] = useState<number>();
-  const [isLockerVisible, setLockerVisible] = useState(false);
-  const [isSetterVisible, setSetterVisible] = useState(false);
-
-  useEffect(() => {
-    getBrightnessLevel().then((level) => setBrightness(level));
-  }, []);
+  const [brightness, setBrightness] = useState<number>(getBrightnessLevel());
+  const [isUnmountBrightnessVisible, setUnmountBrightnessVisibility] =
+    useState(false);
 
   return (
-    <SafeAreaView style={[styles.container, styles.flex]}>
-      <View style={[styles.flex, styles.container]}>
-        <Text>Current device brightness is {brightness}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={async () => {
-            const level = await getBrightnessLevel();
-            setBrightness(level);
-            Alert.alert('getBrightnessLevel', `Brightness level is ${level}`);
-          }}
-        >
-          <Text>Get brightness level</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={async () => {
-            const level = 1;
-            await setBrightnessLevel(level, true);
-            Alert.alert('setBrightnessLevel', `Brightness is set to ${level}`);
-          }}
-        >
-          <Text>Set brightness level</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={async () => {
-            if (Platform.OS !== 'android') {
-              return;
-            }
-            const level = await getSystemBrightnessLevel();
-            Alert.alert(
-              'getSystemBrightnessLevel',
-              `System brightness level is ${level}`
-            );
-          }}
-        >
-          <Text>Get system brightness level (android)</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            setLockerVisible((prev) => !prev);
-          }}
-        >
-          <Text>{`${
-            isLockerVisible ? 'Unmount' : 'Render'
-          } BrightnessLockerComponent`}</Text>
-        </TouchableOpacity>
-        {isLockerVisible && <BrightnessLockerComponent />}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            setSetterVisible((prev) => !prev);
-          }}
-        >
-          <Text>{`${
-            isSetterVisible ? 'Unmount' : 'Render'
-          } BrightnessSetterComponent`}</Text>
-        </TouchableOpacity>
-        {isSetterVisible && <BrightnessSetterComponent />}
-      </View>
-    </SafeAreaView>
+    <View style={[styles.flex, styles.container, styles.verticalCenter]}>
+      <Text>Current device brightness is {brightness}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          const level = getBrightnessLevel();
+          setBrightness(level);
+          Alert.alert('getBrightnessLevel', `Brightness level is ${level}`);
+        }}
+      >
+        <Text style={styles.text}>Get brightness level</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          const level = 1;
+          setBrightnessLevel(level);
+          Alert.alert('setBrightnessLevel', `Brightness is set to ${level}`);
+        }}
+      >
+        <Text style={styles.text}>Set brightness level</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          resetBrightness();
+          Alert.alert('resetBrightness', `Brightness reset`);
+        }}
+      >
+        <Text style={styles.text}>Reset brightness</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          setUnmountBrightnessVisibility((prev) => !prev);
+        }}
+      >
+        <Text style={styles.text}>{`${
+          isUnmountBrightnessVisible ? 'Unmount' : 'Render'
+        } UnmountBrightnessComponent`}</Text>
+      </TouchableOpacity>
+      {isUnmountBrightnessVisible && <UnmountBrightnessComponent />}
+    </View>
   );
 }
 
@@ -121,14 +77,22 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     alignItems: 'flex-start',
+    backgroundColor: '#000000',
   },
   flex: {
     flex: 1,
   },
+  text: {
+    color: '#FFFFFF',
+  },
+  verticalCenter: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   button: {
     marginTop: 16,
     padding: 8,
-    borderColor: '#000000',
+    borderColor: '#FFFFFF',
     borderWidth: 1,
     borderRadius: 16,
   },
