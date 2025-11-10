@@ -47,6 +47,7 @@ resetBrightness();
 
 // just setting a brightness for the rest of app's life
 useDeviceBrightness(level: number, resetOnUnmount?: boolean);
+```
 
 ## Contributing
 
