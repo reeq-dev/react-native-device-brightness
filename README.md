@@ -36,7 +36,10 @@ import {
     resetBrightness,
 } from '@reeq/react-native-device-brightness';
 
-// setting brightness
+/**
+ * setting brightness a required level
+ * @param level: required
+ */
 setBrightnessLevel(level: number);
 
 // getting brightness
@@ -45,7 +48,15 @@ const brightness = getBrightnessLevel();
 // reseting brightness
 resetBrightness();
 
-// just setting a brightness for the rest of app's life
+/**
+ * Hook sets a brightness level, will trigger each time when level is changed.
+ * It also releases controlling brightness when app goes into inactive/background state
+ * and restore when it comes back to foreground state.
+ * This is just a javascript implementation. You may write you own using static methods.
+ * @param level: required
+ * @param resetOnUnmount: optional. Default is false.
+ */
+ 
 useDeviceBrightness(level: number, resetOnUnmount?: boolean);
 ```
 
