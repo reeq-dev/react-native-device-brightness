@@ -25,6 +25,11 @@
   return @(value);
 }
 
+- (NSNumber *)getSystemBrightnessLevel {
+  CGFloat value = [UIScreen mainScreen].brightness;
+  return @(value);
+}
+
 - (void)resetBrightness {
   [self setBrightnessTo:self.previousBrightness duration:0.3 ticksPerSecond:120.0];
 }

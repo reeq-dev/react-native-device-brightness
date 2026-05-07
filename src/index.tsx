@@ -22,6 +22,13 @@ export const getBrightnessLevel = (): number => {
 };
 
 /**
+ * Gets the system device brightness level in range 0-1.
+ */
+export const getSystemBrightnessLevel = (): number => {
+  return DeviceBrightness.getSystemBrightnessLevel();
+};
+
+/**
  * Resets brightness to the level it was before the brightness has been set manualy
  */
 export const resetBrightness = (): void => {

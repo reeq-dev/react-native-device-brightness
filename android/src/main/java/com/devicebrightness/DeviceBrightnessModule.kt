@@ -12,6 +12,11 @@ class DeviceBrightnessModule(reactContext: ReactApplicationContext) :
     return NAME
   }
 
+  override fun getSystemBrightnessLevel(): Double {
+    val brightness = Settings.System.getString(getCurrentActivity().contentResolver, "screen_brightness")
+    return Integer.parseInt(brightness).toDouble() / 255.0
+  }
+
   override fun getBrightnessLevel() : Double {
     val activity = reactApplicationContext.currentActivity ?: return 0.0
     return activity.window.attributes.screenBrightness.toDouble()
